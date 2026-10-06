@@ -1,0 +1,18 @@
+# Dependencias directas inferidas del código; entorno no validado.
+# LangChain <1 conserva los imports históricos langchain.schema y text_splitter.
+langchain>=0.3,<1
+langchain-community>=0.3,<0.4
+langchain-core>=0.3,<1
+langchain-ollama>=0.2,<0.4
+langchain-huggingface>=0.1,<0.4
+chromadb
+sentence-transformers
+transformers
+torch
+pypdf
+bert-score
+pandas
+requests
+selenium
+webdriver-manager
+beautifulsoup4
