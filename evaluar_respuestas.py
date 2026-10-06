@@ -1,6 +1,6 @@
 # evaluar_modelo.py
 
-from main_prueba import ChatPDF
+from main import ChatPDF
 from evaluador import EvaluadorBERTScore
 import pandas as pd
 
