@@ -64,7 +64,7 @@ ollama pull stablelm2
 
 Ollama debe estar en ejecución. Los embeddings usados son `jinaai/jina-embeddings-v2-base-es`; BERTScore utiliza `bert-base-multilingual-cased`.
 
-**Las dependencias se han reconstruido a partir del código, no del entorno original. No son un lockfile ni una instalación validada.** La restricción de LangChain mantiene los imports anteriores a su versión 1.
+Las dependencias se han reconstruido a partir del código. Se han comprobado instalación, imports, carga JSON, ingesta y recuperación en Chroma en un entorno aislado. No representan el entorno histórico ni un lockfile. Transformers y Sentence Transformers mantienen versiones anteriores a sus cambios de arquitectura recientes. La generación completa y BERTScore quedan pendientes de validación; véase `docs/REVIEW.md`.
 
 ### Consulta con datos ficticios
 
@@ -88,7 +88,9 @@ Ejecutarla desde la raíz conserva la resolución de `tfgs_pequeño.json`.
 
 `EvaluadorBERTScore` devuelve precisión, recall y F1 de similitud semántica; **no son métricas de clasificación ni una garantía de exactitud factual**. Esta edición no añade resultados numéricos ni afirma que exista una evaluación ROC/AUC en estos scripts.
 
-`evaluar_respuestas.py` importa `main_prueba.ChatPDF`, pero ese módulo no está disponible en la ruta consultada. El script no puede ejecutarse tal como está. Se conserva para no sustituir una posible variante experimental por otra sin conocerla.
+`evaluar_respuestas.py` utiliza `main.ChatPDF`, igual que la prueba manual. Se corrigió la referencia al módulo ausente `main_prueba` siguiendo la indicación del autor.
+
+La carga actual de Jina muestra pesos de `BertModel` sin inicializar desde el checkpoint. La ingesta puede completar, pero esto impide dar por validada la calidad de los embeddings: queda pendiente cargar la arquitectura específica del modelo. La prueba de generación con StableLM2 no se completó porque su descarga falla con las restricciones de red del entorno de verificación.
 
 El autor se guarda en los metadatos, pero no se incorpora al contexto del prompt actual. Las consultas por autor de la prueba manual pueden verse afectadas. El scraper también tiene limitaciones de paginación y control del número de registros; véase la revisión.
 
@@ -96,9 +98,9 @@ El autor se guarda en los metadatos, pero no se incorpora al contexto del prompt
 
 Los JSON originales incluyen nombres, resúmenes, enlaces y campos de derechos de trabajos de terceros procedentes de UPM. El ejemplo de `data/` es ficticio y no contiene textos de esos trabajos.
 
-La presencia de datos en un repositorio académico de acceso abierto no implica que todos puedan redistribuirse bajo una misma licencia. No se añade una licencia que abarque contenido de terceros. El repositorio permanece privado.
+El autor indica que la universidad autorizó el uso de estos datos para su RAG. Se conservan los dos JSON originales y sus campos de derechos y enlaces. No se añade una licencia que abarque contenido de terceros. El repositorio permanece privado.
 
-`.gitignore` evita futuras incorporaciones de cachés, configuración del IDE, bases vectoriales y secretos habituales. **No elimina archivos ya versionados ni los borra del historial.**
+Se retiraron `.idea/`, `__pycache__/` y `chroma_db/` de la versión actual; `.gitignore` evita futuras incorporaciones. Esos archivos siguen en los commits históricos, que se conservan.
 
 ## Autor
 

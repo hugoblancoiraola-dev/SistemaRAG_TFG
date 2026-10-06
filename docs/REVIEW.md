@@ -1,27 +1,43 @@
-# Revisión de preparación del portfolio
+# Revisión del repositorio y pruebas (2026-10-06)
 
-## Alcance
+## Cambios
 
-Se leyeron los cinco scripts Python originales y ambos JSON (25 y 6 registros). No se alteran código, modelos, prompts, imports, rutas, datasets ni archivos históricos. Se añaden documentación, dependencias inferidas, reglas de exclusión y un ejemplo ficticio.
+- El evaluador importa `ChatPDF` de `main`, siguiendo la indicación del autor. No se modifica la implementación de ChatPDF, los prompts, los modelos ni las preguntas de evaluación.
+- Se retiran de la versión actual `.idea/`, `__pycache__/` y `chroma_db/`. No se reescribe el historial.
+- Se conservan íntegramente `tfgs.json` (25 registros) y `tfgs_pequeño.json` (6 registros). El autor indica que contó con autorización universitaria para usarlos en el RAG.
+- Se limitan Transformers a la rama 4 y Sentence Transformers a la rama 3: con las versiones 5.19.0 / 6.1.0, la carga del modelo falla por `attn_implementation="torch"`.
+- Se actualiza la documentación para reflejar pruebas y limitaciones.
 
-## Hallazgos
+## Historial
 
-- Modelo generativo: stablelm2 en Ollama, temperatura 0.
-- Embeddings: jinaai/jina-embeddings-v2-base-es.
-- Recuperador: k=5; contexto limitado a 500 caracteres del resumen por documento.
-- Divisor de texto configurado pero no aplicado.
-- Los metadatos guardan autor; el contexto no lo incluye.
-- Evaluación implementada: BERTScore con bert-base-multilingual-cased. No hay resultados medidos añadidos ni implementación ROC/AUC en los scripts revisados.
-- evaluar_respuestas.py depende de main_prueba.py, que no se encuentra en la ruta consultada.
-- El scraper inicializa Selenium, pero no navega a la URL antes de buscar el botón Siguiente; requests vuelve a usar base_url. El límite de seis se comprueba fuera del bucle de enlaces, por lo que puede superarse. Su ejecución sobrescribe tfgs.json.
-- Los JSON contienen resúmenes y datos identificativos de trabajos de terceros, con campos de derechos que incluyen restricciones.
+Se enumeraron los nueve commits anteriores a esta limpieza, desde el commit inicial hasta la preparación documental; una sola referencia Git, `main`, sin tags ni ramas adicionales. Se revisaron los árboles completos (sin truncar) y sus 24 blobs únicos. No hay un fuente `main_prueba.py` en ninguno de esos árboles; sí una caché compilada del módulo.
 
-## Comprobaciones y límites
+Se examinaron los textos de código, JSON, documentación y configuración, y se buscaron patrones comunes de claves, tokens, contraseñas y claves privadas. No se encontraron coincidencias de credenciales. También se inspeccionaron las cadenas imprimibles de las dos cachés Python y los binarios pequeños. Las cachés contienen una ruta local de Windows (`C:\\Users\\user\\Desktop\\TFG\\...`); siguen disponibles en commits antiguos.
 
-Los cinco scripts se comprueban mediante análisis sintáctico y los tres JSON mediante parseo. Se revisan patrones habituales de credenciales en los archivos originales leídos, sin encontrar coincidencias; esto no constituye una auditoría completa de secretos.
+**Límite de la revisión:** la base histórica `chroma.sqlite3` (aproximadamente 11 MB) no pudo descargarse con el conector: su respuesta de contenido base64 está vacía por el tamaño. La revisión de binarios y las búsquedas de patrones no equivalen a una garantía de ausencia de secretos. Los archivos retirados siguen existiendo en el historial.
 
-No se revisa todo el historial Git ni el contenido binario de chroma_db, cachés o configuración del IDE. No se ejecutan el scraper, Ollama, descargas de modelos ni una instalación completa. Las dependencias no representan las versiones verificadas del entorno original.
+## Pruebas
 
-Las reglas de .gitignore no retiran archivos ya versionados. Las carpetas históricas y los datos se conservan para evitar borrar material sin comprobar sus dependencias. Antes de publicación quedan pendientes la revisión del historial, los archivos auxiliares y los permisos de redistribución.
+Se creó un entorno Python 3.12 aislado y se instalaron las dependencias. Se probó el código original de `main.py`, sin sustituir embeddings ni el generador por simulaciones.
 
-No se reorganizan scripts porque sus imports y rutas relativas dependen de la raíz. No se añade LICENSE para no decidir una licencia del código ni extenderla al contenido de terceros.
+| Comprobación | Resultado |
+| --- | --- |
+| Sintaxis de los cinco scripts y parseo de los JSON | Correctos |
+| Imports de ChatPDF y EvaluadorBERTScore y creación de ChatPDF | Correctos |
+| Conversión de JSON a documentos | Correcta: 25, 6 y 1 documentos |
+| Consulta sin datos cargados | ValueError esperado |
+| Ingesta de los seis TFG originales con Jina y Chroma | Completa, con aviso de pesos del modelo |
+| Recuperación | Cinco documentos recuperados |
+| Generación con StableLM2 | No validada: modelo no descargable por las restricciones de red |
+| BERTScore real | No ejecutado: no se dispone de respuestas generadas para validar la evaluación |
+
+Las primeras versiones instaladas (Transformers 5.19.0 y Sentence Transformers 6.1.0) fallaron al cargar Jina. Con Transformers 4.57.6 y Sentence Transformers 3.4.1, la ingesta y recuperación completaron. Componentes adicionales utilizados: LangChain 0.3.30, Community 0.3.31, Core 0.3.86, Ollama 0.3.10, Hugging Face 0.3.1 y Chroma 1.5.9. Se instaló PyTorch para CPU. El entorno de verificación también requirió socksio por su proxy; no se añade como requisito del proyecto.
+
+## Pendientes concretos
+
+1. **Carga del modelo Jina:** el cargador actual selecciona BertModel genérico y muestra pesos sin cargar desde el checkpoint. No se debe interpretar una ingesta sin excepción como validación de los embeddings. Queda pendiente configurar y comprobar la arquitectura específica del modelo; no se modifica en esta limpieza.
+2. **Generación real:** se instaló Ollama y se comprobó su servidor, pero la descarga de StableLM2 falla al acceder al almacenamiento remoto por las restricciones de red. La consulta devuelve el mensaje de error previsto cuando Ollama no está accesible desde la prueba. No se atribuye este fallo de conexión al algoritmo RAG.
+3. **Evaluación:** ejecutar las diez preguntas con Ollama disponible y después BERTScore.
+4. **Limitaciones previas:** el divisor de texto está configurado pero no se aplica; el autor no se incluye en el contexto del prompt; el scraper puede repetir páginas y superar el límite de seis y sobrescribe tfgs.json.
+
+Se mantienen estructura, rutas y modelos originales. No se publica el repositorio ni se añade licencia en esta fase.
