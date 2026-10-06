@@ -1,0 +1,18 @@
+[
+  {
+    "título": "Recuperación semántica de documentación académica",
+    "autor": "Persona ficticia A",
+    "director": "Persona ficticia B",
+    "tipo_documento": "Trabajo de ejemplo ficticio",
+    "grado": "Ingeniería del Software",
+    "fecha": "2026",
+    "asignaturas": "Informática",
+    "ods": "04. Educación de calidad",
+    "palabras_clave": "RAG; recuperación semántica; documentos",
+    "institución": "Institución ficticia",
+    "departamento": "Informática",
+    "derechos": "Datos ficticios creados para esta demostración",
+    "PDF_link": "No especificado",
+    "resumen": "Este ejemplo ficticio describe un sistema de búsqueda semántica que recupera documentos académicos relevantes y utiliza un modelo de lenguaje local para responder preguntas con contexto."
+  }
+]
