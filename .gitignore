@@ -1,0 +1,29 @@
+# Python y entornos locales
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# IDE y sistema
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Bases vectoriales y salidas generadas
+chroma_db/
+*.log
+
+# Configuración sensible
+.env
+.env.*
+!.env.example
+*.pem
+*.key
