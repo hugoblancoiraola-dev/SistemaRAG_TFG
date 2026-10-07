@@ -4,6 +4,8 @@ Proyecto de Trabajo Fin de Grado de **Hugo Blanco Iraola**, desarrollado en Inge
 
 Prototipo de Retrieval-Augmented Generation (RAG) para consultar trabajos académicos mediante lenguaje natural. Combina adquisición de metadatos, recuperación semántica y generación con un modelo local.
 
+Se conserva la implementación académica original del sistema RAG. El autor confirma que realizó pruebas de preguntas y respuestas hasta la entrega del TFG y que el sistema funcionaba en su entorno original. La preparación del repositorio añade documentación y limpieza de archivos generados; el import del evaluador se corrigió a `main.ChatPDF` siguiendo su indicación.
+
 ## Qué demuestra
 
 - Integración de un flujo de datos académicos con LangChain y Chroma.
@@ -64,7 +66,7 @@ ollama pull stablelm2
 
 Ollama debe estar en ejecución. Los embeddings usados son `jinaai/jina-embeddings-v2-base-es`; BERTScore utiliza `bert-base-multilingual-cased`.
 
-Las dependencias se han reconstruido a partir del código. Se han comprobado instalación, imports, carga JSON, ingesta y recuperación en Chroma en un entorno aislado. No representan el entorno histórico ni un lockfile. Transformers y Sentence Transformers mantienen versiones anteriores a sus cambios de arquitectura recientes. La generación completa y BERTScore quedan pendientes de validación; véase `docs/REVIEW.md`.
+Las dependencias se han reconstruido a partir del código. Se han comprobado instalación, imports, carga JSON, ingesta y recuperación en Chroma en un entorno aislado. No representan el entorno histórico ni un lockfile. Transformers y Sentence Transformers mantienen versiones anteriores a sus cambios de arquitectura recientes. La generación completa y BERTScore no se pudieron volver a validar en ese entorno; esta limitación no sustituye las pruebas realizadas por el autor para la entrega. Véase `docs/REVIEW.md`.
 
 ### Consulta con datos ficticios
 
@@ -86,11 +88,11 @@ Ejecutarla desde la raíz conserva la resolución de `tfgs_pequeño.json`.
 
 ## Evaluación y limitaciones
 
-`EvaluadorBERTScore` devuelve precisión, recall y F1 de similitud semántica; **no son métricas de clasificación ni una garantía de exactitud factual**. Esta edición no añade resultados numéricos ni afirma que exista una evaluación ROC/AUC en estos scripts.
+`EvaluadorBERTScore` devuelve precisión, recall y F1 de similitud semántica; **no son métricas de clasificación ni una garantía de exactitud factual**. No se añaden resultados numéricos que no se hayan recuperado de las pruebas originales.
 
 `evaluar_respuestas.py` utiliza `main.ChatPDF`, igual que la prueba manual. Se corrigió la referencia al módulo ausente `main_prueba` siguiendo la indicación del autor.
 
-La carga actual de Jina muestra pesos de `BertModel` sin inicializar desde el checkpoint. La ingesta puede completar, pero esto impide dar por validada la calidad de los embeddings: queda pendiente cargar la arquitectura específica del modelo. La prueba de generación con StableLM2 no se completó porque su descarga falla con las restricciones de red del entorno de verificación.
+En el entorno nuevo de verificación, la carga de Jina mostró avisos de pesos de `BertModel` sin inicializar desde el checkpoint. Se completaron ingesta y recuperación, pero no se validó allí la calidad de los embeddings. Tampoco se completó la generación con StableLM2 por restricciones de red al descargar el modelo. Estos hallazgos corresponden a ese entorno reconstruido y no prueban que el entorno original de entrega presentara el mismo comportamiento. El código se conserva; los detalles están en `docs/REVIEW.md`.
 
 El autor se guarda en los metadatos, pero no se incorpora al contexto del prompt actual. Las consultas por autor de la prueba manual pueden verse afectadas. El scraper también tiene limitaciones de paginación y control del número de registros; véase la revisión.
 
@@ -98,7 +100,7 @@ El autor se guarda en los metadatos, pero no se incorpora al contexto del prompt
 
 Los JSON originales incluyen nombres, resúmenes, enlaces y campos de derechos de trabajos de terceros procedentes de UPM. El ejemplo de `data/` es ficticio y no contiene textos de esos trabajos.
 
-El autor indica que la universidad autorizó el uso de estos datos para su RAG. Se conservan los dos JSON originales y sus campos de derechos y enlaces. No se añade una licencia que abarque contenido de terceros. El repositorio permanece privado.
+El autor indica que la universidad autorizó el uso de estos datos para su RAG. Se conservan los dos JSON originales y sus campos de derechos y enlaces. No se añade una licencia que abarque contenido de terceros.
 
 Se retiraron `.idea/`, `__pycache__/` y `chroma_db/` de la versión actual; `.gitignore` evita futuras incorporaciones. Esos archivos siguen en los commits históricos, que se conservan.
 
