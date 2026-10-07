@@ -33,11 +33,15 @@ Se creó un entorno Python 3.12 aislado y se instalaron las dependencias. Se pro
 
 Las primeras versiones instaladas (Transformers 5.19.0 y Sentence Transformers 6.1.0) fallaron al cargar Jina. Con Transformers 4.57.6 y Sentence Transformers 3.4.1, la ingesta y recuperación completaron. Componentes adicionales utilizados: LangChain 0.3.30, Community 0.3.31, Core 0.3.86, Ollama 0.3.10, Hugging Face 0.3.1 y Chroma 1.5.9. Se instaló PyTorch para CPU. El entorno de verificación también requirió socksio por su proxy; no se añade como requisito del proyecto.
 
-## Pendientes concretos
+## Hallazgos del entorno reconstruido
 
 1. **Carga del modelo Jina:** el cargador actual selecciona BertModel genérico y muestra pesos sin cargar desde el checkpoint. No se debe interpretar una ingesta sin excepción como validación de los embeddings. Queda pendiente configurar y comprobar la arquitectura específica del modelo; no se modifica en esta limpieza.
 2. **Generación real:** se instaló Ollama y se comprobó su servidor, pero la descarga de StableLM2 falla al acceder al almacenamiento remoto por las restricciones de red. La consulta devuelve el mensaje de error previsto cuando Ollama no está accesible desde la prueba. No se atribuye este fallo de conexión al algoritmo RAG.
 3. **Evaluación:** ejecutar las diez preguntas con Ollama disponible y después BERTScore.
 4. **Limitaciones previas:** el divisor de texto está configurado pero no se aplica; el autor no se incluye en el contexto del prompt; el scraper puede repetir páginas y superar el límite de seis y sobrescribe tfgs.json.
 
-Se mantienen estructura, rutas y modelos originales. No se publica el repositorio ni se añade licencia en esta fase.
+## Decisión de conservación (2026-10-07)
+
+El autor confirma que probó el sistema hasta la entrega del TFG y que funcionaba en el entorno original. Decide conservar la implementación académica y autoriza publicar el repositorio. Los hallazgos anteriores pertenecen al entorno reconstruido de verificación; no permiten afirmar que el entorno de entrega tuviera los mismos avisos. La memoria aún no se ha consultado para recuperar preguntas, respuestas o resultados originales.
+
+Se mantienen estructura, rutas y modelos originales. El único ajuste funcional realizado en esta preparación es el import del evaluador a main.ChatPDF, autorizado por el autor. No se añade licencia en esta fase.
