@@ -6,6 +6,12 @@ Prototipo de Retrieval-Augmented Generation (RAG) para consultar trabajos acadé
 
 Se conserva la implementación académica original del sistema RAG. El autor confirma que realizó pruebas de preguntas y respuestas hasta la entrega del TFG y que el sistema funcionaba en su entorno original. La preparación del repositorio añade documentación y limpieza de archivos generados; el import del evaluador se corrigió a `main.ChatPDF` siguiendo su indicación.
 
+## Memoria del TFG
+
+[Descargar la memoria completa (PDF · español)](docs/TFG_Hugo_Blanco_Iraola.pdf)
+
+Documento original: desarrollo, arquitectura, experimentación y ejemplos de preguntas y respuestas. Se publica sin modificar su contenido.
+
 ## Qué demuestra
 
 - Integración de un flujo de datos académicos con LangChain y Chroma.

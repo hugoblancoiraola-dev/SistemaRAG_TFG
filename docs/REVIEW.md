@@ -42,6 +42,6 @@ Las primeras versiones instaladas (Transformers 5.19.0 y Sentence Transformers 6
 
 ## Decisión de conservación (2026-10-07)
 
-El autor confirma que probó el sistema hasta la entrega del TFG y que funcionaba en el entorno original. Decide conservar la implementación académica y autoriza publicar el repositorio. Los hallazgos anteriores pertenecen al entorno reconstruido de verificación; no permiten afirmar que el entorno de entrega tuviera los mismos avisos. La memoria aún no se ha consultado para recuperar preguntas, respuestas o resultados originales.
+El autor confirma que probó el sistema hasta la entrega del TFG y que funcionaba en el entorno original. Decide conservar la implementación académica y autoriza publicar el repositorio. Los hallazgos anteriores pertenecen al entorno reconstruido de verificación; no permiten afirmar que el entorno de entrega tuviera los mismos avisos. La memoria se incorporó y revisó el 2026-10-14; documenta Jina, StableLM2, la estructura del sistema, pruebas con seis y 25 TFGs, y ejemplos de preguntas y respuestas. Hay discrepancias entre algunas cifras BERTScore del texto y la tabla; se mantiene el PDF original y no se trasladan esas cifras a la web.
 
 Se mantienen estructura, rutas y modelos originales. El único ajuste funcional realizado en esta preparación es el import del evaluador a main.ChatPDF, autorizado por el autor. No se añade licencia en esta fase.
